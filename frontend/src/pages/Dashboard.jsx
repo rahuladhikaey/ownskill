@@ -10,19 +10,6 @@ export default function Dashboard() {
 
   return (
     <div>
-      <nav className="navbar navbar-expand-lg navbar-light bg-white">
-        <div className="container">
-          <Link className="navbar-brand fw-bold" to="/">
-            <span style={{ color: '#667eea' }}>Skill2020</span>
-          </Link>
-          <div className="ms-auto">
-            <span className="me-3">Welcome, {user?.name}!</span>
-            <button className="btn btn-sm btn-danger" onClick={() => { logout(); navigate('/'); }}>
-              Logout
-            </button>
-          </div>
-        </div>
-      </nav>
 
       <div className="container-main">
         <h1 className="page-title">Student Dashboard</h1>

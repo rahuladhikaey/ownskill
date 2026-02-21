@@ -1,0 +1,8 @@
+file:///D:/study%20project/skill2020-academy/backend/routes/exams.js:3
+import { createQuestions } from '../controllers/questionsController.js';
+         ^^^^^^^^^^^^^^^
+SyntaxError: The requested module '../controllers/questionsController.js' does not provide an export named 'createQuestions'
+    at #_instantiate (node:internal/modules/esm/module_job:254:21)
+    at async ModuleJob.run (node:internal/modules/esm/module_job:369:5)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:671:26)
+    at async file:///D:/study%20project/skill2020-academy/backend/[eval1]:1:28

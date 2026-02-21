@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { validateEmail, validatePassword } from '../utils/helpers';
+import '../styles/Auth.css';
 
 export default function StudentSignup() {
   const [formData, setFormData] = useState({
@@ -25,7 +26,6 @@ export default function StudentSignup() {
     e.preventDefault();
     setError('');
 
-    // Validation
     if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
       setError('Please fill all fields');
       return;
@@ -51,122 +51,168 @@ export default function StudentSignup() {
       await signup(formData.name, formData.email, formData.password, formData.class_level);
       navigate('/dashboard');
     } catch (err) {
-      setError(err.error || 'Signup failed');
+      setError(err.details || err.error || 'Signup failed. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="container mt-5">
-      <div className="row justify-content-center">
-        <div className="col-md-6">
-          <div className="card">
-            <div className="card-body p-5">
-              <h2 className="text-center mb-4">
-                <span style={{ color: '#667eea' }}>Skill2020</span> Student Signup
-              </h2>
-
-              {error && <div className="alert alert-danger">{error}</div>}
-
-              <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                  <label className="form-label">Full Name</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Your full name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                  />
-                </div>
-
-                <div className="mb-3">
-                  <label className="form-label">Email</label>
-                  <input
-                    type="email"
-                    className="form-control"
-                    placeholder="your@email.com"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                  />
-                </div>
-
-                <div className="mb-3">
-                  <label className="form-label">Select Class Level</label>
-                  <select
-                    className="form-select"
-                    name="class_level"
-                    value={formData.class_level}
-                    onChange={handleChange}
-                  >
-                    <optgroup label="School">
-                      <option value="5">Class 5</option>
-                      <option value="6">Class 6</option>
-                      <option value="7">Class 7</option>
-                      <option value="8">Class 8</option>
-                      <option value="9">Class 9</option>
-                      <option value="10">Class 10</option>
-                    </optgroup>
-                    <optgroup label="GATE">
-                      <option value="gate_cse">GATE - Computer Science</option>
-                      <option value="gate_ee">GATE - Electrical Engineering</option>
-                      <option value="gate_ec">GATE - Electronics</option>
-                      <option value="gate_me">GATE - Mechanical</option>
-                      <option value="gate_ce">GATE - Civil</option>
-                    </optgroup>
-                  </select>
-                </div>
-
-                <div className="mb-3">
-                  <label className="form-label">Password</label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    placeholder="Enter password (min 6 chars)"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleChange}
-                  />
-                </div>
-
-                <div className="mb-3">
-                  <label className="form-label">Confirm Password</label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    placeholder="Confirm your password"
-                    name="confirmPassword"
-                    value={formData.confirmPassword}
-                    onChange={handleChange}
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="btn btn-primary w-100 mb-3"
-                  disabled={loading}
-                >
-                  {loading ? 'Creating account...' : 'Create Account'}
-                </button>
-              </form>
-
-              <hr />
-
-              <p className="text-center mb-2">
-                Already have an account?{' '}
-                <Link to="/login" className="text-decoration-none">
-                  Login here
-                </Link>
-              </p>
-
-              <Link to="/" className="btn btn-outline-secondary w-100 mt-3">
-                Back to Home
-              </Link>
+    <div className="auth-container">
+      <div className="auth-wrapper">
+        <div className="auth-card signup-card">
+          <div className="auth-header">
+            <div className="brand-logo">
+              <span className="logo-icon">📚</span>
+              <h1 className="brand-name">Skill<span className="brand-highlight">2020</span></h1>
             </div>
+            <p className="auth-subtitle">Join Our Learning Community</p>
           </div>
+
+          <form onSubmit={handleSubmit} className="auth-form">
+            {error && (
+              <div className="alert alert-danger alert-dismissible fade show" role="alert">
+                <i className="fas fa-exclamation-circle"></i> {error}
+              </div>
+            )}
+
+            <div className="form-group">
+              <label htmlFor="name" className="form-label">
+                <i className="fas fa-user"></i> Full Name
+              </label>
+              <input
+                type="text"
+                id="name"
+                className="form-control form-control-lg"
+                placeholder="Your full name"
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                disabled={loading}
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="email" className="form-label">
+                <i className="fas fa-envelope"></i> Email Address
+              </label>
+              <input
+                type="email"
+                id="email"
+                className="form-control form-control-lg"
+                placeholder="your@email.com"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                disabled={loading}
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="class_level" className="form-label">
+                <i className="fas fa-graduation-cap"></i> Select Class/Level
+              </label>
+              <select
+                id="class_level"
+                className="form-select form-select-lg"
+                name="class_level"
+                value={formData.class_level}
+                onChange={handleChange}
+                disabled={loading}
+              >
+                <optgroup label="School Level">
+                  <option value="5">Class 5</option>
+                  <option value="6">Class 6</option>
+                  <option value="7">Class 7</option>
+                  <option value="8">Class 8</option>
+                  <option value="9">Class 9</option>
+                  <option value="10">Class 10</option>
+                </optgroup>
+                <optgroup label="Competitive Exams - GATE">
+                  <option value="gate_cse">GATE - Computer Science (CSE)</option>
+                  <option value="gate_ee">GATE - Electrical Engineering (EE)</option>
+                  <option value="gate_ec">GATE - Electronics (ECE)</option>
+                  <option value="gate_me">GATE - Mechanical (ME)</option>
+                  <option value="gate_ce">GATE - Civil Engineering (CE)</option>
+                </optgroup>
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="password" className="form-label">
+                <i className="fas fa-lock"></i> Password
+              </label>
+              <input
+                type="password"
+                id="password"
+                className="form-control form-control-lg"
+                placeholder="Minimum 6 characters"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                disabled={loading}
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="confirmPassword" className="form-label">
+                <i className="fas fa-lock-check"></i> Confirm Password
+              </label>
+              <input
+                type="password"
+                id="confirmPassword"
+                className="form-control form-control-lg"
+                placeholder="Re-enter your password"
+                name="confirmPassword"
+                value={formData.confirmPassword}
+                onChange={handleChange}
+                disabled={loading}
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="btn btn-signup btn-lg w-100"
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  Creating Account...
+                </>
+              ) : (
+                <>
+                  <i className="fas fa-user-plus me-2"></i> Create My Account
+                </>
+              )}
+            </button>
+          </form>
+
+          <div className="auth-divider">
+            <span>Already registered?</span>
+          </div>
+
+          <Link to="/login" className="btn btn-outline-primary btn-lg w-100">
+            <i className="fas fa-sign-in-alt me-2"></i> Sign In Here
+          </Link>
+
+          <div className="auth-footer">
+            <Link to="/" className="back-link">
+              <i className="fas fa-arrow-left me-1"></i> Back to Home
+            </Link>
+          </div>
+        </div>
+
+        <div className="auth-info">
+          <h2>Start Learning Today! 🎓</h2>
+          <p>Get instant access to comprehensive study materials and practice exams</p>
+          <ul className="features-list">
+            <li><i className="fas fa-check-circle"></i> Comprehensive Study Notes</li>
+            <li><i className="fas fa-check-circle"></i> Daily Practice Problems (DPP)</li>
+            <li><i className="fas fa-check-circle"></i> Mock Tests & Exams</li>
+            <li><i className="fas fa-check-circle"></i> Previous Year Papers</li>
+            <li><i className="fas fa-check-circle"></i> Performance Tracking</li>
+          </ul>
         </div>
       </div>
     </div>

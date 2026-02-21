@@ -9,42 +9,6 @@ export default function Home() {
   return (
     <div>
       {/* Navigation */}
-      <nav className="navbar navbar-expand-lg navbar-light bg-white">
-        <div className="container">
-          <Link className="navbar-brand fw-bold" to="/">
-            <span style={{ color: '#667eea' }}>Skill2020</span> Academy
-          </Link>
-          <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav ms-auto">
-              {!isAuthenticated ? (
-                <>
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/login">Student Login</Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/signup">Student Signup</Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/admin-login">Admin Login</Link>
-                  </li>
-                </>
-              ) : (
-                <>
-                  <li className="nav-item">
-                    <span className="nav-link">Welcome, {user?.name}!</span>
-                  </li>
-                  <li className="nav-item">
-                    <Link className="nav-link" to="/dashboard">Dashboard</Link>
-                  </li>
-                </>
-              )}
-            </ul>
-          </div>
-        </div>
-      </nav>
 
       {/* Hero Section */}
       <div className="hero-section">
@@ -63,7 +27,7 @@ export default function Home() {
       {/* Features Section */}
       <div className="container-main">
         <div className="section-title text-center mb-5">Why Choose Skill2020?</div>
-        
+
         <div className="row">
           <div className="col-md-4 mb-4">
             <div className="feature-card card">
@@ -119,7 +83,7 @@ export default function Home() {
       <div className="bg-light py-5">
         <div className="container">
           <div className="section-title text-center">Supported Subjects</div>
-          
+
           <div className="row">
             <div className="col-md-6">
               <h5 className="mb-3">School (Class 5-10)</h5>

@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import { authService } from '../services/apiService';
 
 const AuthContext = createContext();
 
@@ -18,9 +18,7 @@ export const AuthProvider = ({ children }) => {
 
   const fetchUserProfile = async () => {
     try {
-      const response = await axios.get('/api/auth/profile', {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const response = await authService.getProfile();
       setUser(response.data);
     } catch (error) {
       console.error('Failed to fetch profile:', error);
@@ -30,7 +28,7 @@ export const AuthProvider = ({ children }) => {
 
   const signup = async (name, email, password, class_level) => {
     try {
-      const response = await axios.post('/api/auth/signup', {
+      const response = await authService.signup({
         name,
         email,
         password,
@@ -47,7 +45,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post('/api/auth/login', { email, password });
+      const response = await authService.login(email, password);
       setToken(response.data.token);
       setUser(response.data.user);
       localStorage.setItem('token', response.data.token);
@@ -59,10 +57,26 @@ export const AuthProvider = ({ children }) => {
 
   const adminLogin = async (email, password, passkey) => {
     try {
-      const response = await axios.post('/api/auth/admin-login', {
+      const response = await authService.adminLogin(email, password, passkey);
+      setToken(response.data.token);
+      setUser(response.data.user);
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('isAdmin', 'true');
+      return response.data;
+    } catch (error) {
+      throw error.response?.data || error;
+    }
+  };
+
+  const adminSignup = async (name, email, password, confirmPassword, adminPasskey, masterPasskey) => {
+    try {
+      const response = await authService.adminSignup({
+        name,
         email,
         password,
-        passkey
+        confirmPassword,
+        adminPasskey,
+        masterPasskey
       });
       setToken(response.data.token);
       setUser(response.data.user);
@@ -89,6 +103,7 @@ export const AuthProvider = ({ children }) => {
       signup,
       login,
       adminLogin,
+      adminSignup,
       logout,
       isAuthenticated: !!token,
       isAdmin: user?.role === 'admin' || user?.role === 'super_admin'

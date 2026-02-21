@@ -8,6 +8,8 @@ import notesRoutes from './routes/notes.js';
 import questionsRoutes from './routes/questions.js';
 import examsRoutes from './routes/exams.js';
 import resultsRoutes from './routes/results.js';
+import dppRoutes from './routes/dpp.js';
+import pyqRoutes from './routes/pyq.js';
 
 dotenv.config();
 
@@ -15,11 +17,11 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: process.env.NODE_ENV === 'development' ? 'http://localhost:5173' : process.env.FRONTEND_URL,
+  origin: process.env.NODE_ENV === 'development' ? ['http://localhost:5173', 'http://localhost:5174'] : process.env.FRONTEND_URL,
   credentials: true
 }));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // Routes
 app.use('/api/auth', authRoutes);
@@ -29,6 +31,8 @@ app.use('/api/notes', notesRoutes);
 app.use('/api/questions', questionsRoutes);
 app.use('/api/exams', examsRoutes);
 app.use('/api/results', resultsRoutes);
+app.use('/api/dpp', dppRoutes);
+app.use('/api/pyq', pyqRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

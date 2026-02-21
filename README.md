@@ -185,7 +185,7 @@ Backend runs on: http://localhost:5000
 cd frontend
 npm run dev
 ```
-
+                         
 Frontend runs on: http://localhost:5173
 
 ### 6. Access the Application

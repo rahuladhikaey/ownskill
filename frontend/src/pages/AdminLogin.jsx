@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { validateEmail } from '../utils/helpers';
+import '../styles/Auth.css';
 
 export default function AdminLogin() {
   const [email, setEmail] = useState('');
@@ -31,84 +32,124 @@ export default function AdminLogin() {
       await adminLogin(email, password, passkey);
       navigate('/admin-dashboard');
     } catch (err) {
-      setError(err.error || 'Admin login failed');
+      setError(err.details || err.error || 'Admin login failed. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="container mt-5">
-      <div className="row justify-content-center">
-        <div className="col-md-5">
-          <div className="card">
-            <div className="card-body p-5">
-              <h2 className="text-center mb-2">
-                <span style={{ color: '#667eea' }}>Skill2020</span> Admin Portal
-              </h2>
-              <p className="text-center text-muted small mb-4">Secure Admin Access Only</p>
-
-              {error && <div className="alert alert-danger">{error}</div>}
-
-              <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                  <label className="form-label">Admin Email</label>
-                  <input
-                    type="email"
-                    className="form-control"
-                    placeholder="admin@example.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </div>
-
-                <div className="mb-3">
-                  <label className="form-label">Password</label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    placeholder="Enter password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </div>
-
-                <div className="mb-3">
-                  <label className="form-label">Admin Passkey</label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    placeholder="Enter passkey (skill2020)"
-                    value={passkey}
-                    onChange={(e) => setPasskey(e.target.value)}
-                  />
-                  <small className="text-muted">
-                    🔐 Hidden passkey required for admin access
-                  </small>
-                </div>
-
-                <button
-                  type="submit"
-                  className="btn btn-primary w-100 mb-3"
-                  disabled={loading}
-                >
-                  {loading ? 'Verifying...' : 'Admin Login'}
-                </button>
-              </form>
-
-              <hr />
-
-              <p className="text-center mb-2">
-                <Link to="/login" className="text-decoration-none text-muted">
-                  Student Login
-                </Link>
-              </p>
-
-              <Link to="/" className="btn btn-outline-secondary w-100 mt-3">
-                Back to Home
-              </Link>
+    <div className="auth-container">
+      <div className="auth-wrapper">
+        <div className="auth-card admin-card">
+          <div className="auth-header">
+            <div className="brand-logo admin-logo">
+              <span className="logo-icon">🛡️</span>
+              <h1 className="brand-name">Skill<span className="brand-highlight">2020</span></h1>
             </div>
+            <p className="auth-subtitle">Admin Control Panel</p>
           </div>
+
+          <form onSubmit={handleSubmit} className="auth-form">
+            {error && (
+              <div className="alert alert-danger alert-dismissible fade show" role="alert">
+                <i className="fas fa-exclamation-circle"></i> {error}
+              </div>
+            )}
+
+            <div className="form-group">
+              <label htmlFor="email" className="form-label">
+                <i className="fas fa-envelope"></i> Admin Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                className="form-control form-control-lg"
+                placeholder="admin@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={loading}
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="password" className="form-label">
+                <i className="fas fa-lock"></i> Password
+              </label>
+              <input
+                type="password"
+                id="password"
+                className="form-control form-control-lg"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                disabled={loading}
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="passkey" className="form-label">
+                <i className="fas fa-key"></i> Admin Passkey
+              </label>
+              <input
+                type="password"
+                id="passkey"
+                className="form-control form-control-lg"
+                placeholder="Enter admin passkey"
+                value={passkey}
+                onChange={(e) => setPasskey(e.target.value)}
+                disabled={loading}
+              />
+              <small className="text-muted d-block mt-1">🔐 Required for secure admin access</small>
+            </div>
+
+            <button 
+              type="submit" 
+              className="btn btn-admin btn-lg w-100"
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  Verifying...
+                </>
+              ) : (
+                <>
+                  <i className="fas fa-shield-alt me-2"></i> Admin Login
+                </>
+              )}
+            </button>
+          </form>
+
+          <div className="auth-divider">
+            <span>Not an admin?</span>
+          </div>
+
+          <Link to="/login" className="btn btn-student btn-lg w-100">
+            <i className="fas fa-user me-2"></i> Student Portal
+          </Link>
+
+          <div className="auth-footer">
+            <Link to="/" className="back-link">
+              <i className="fas fa-arrow-left me-1"></i> Back to Home
+            </Link>
+          </div>
+
+          <div className="auth-signup-link">
+            <p>New admin user? <Link to="/admin-signup">Create account here</Link></p>
+          </div>
+        </div>
+
+        <div className="auth-info admin-info">
+          <h2>Admin Dashboard 🔐</h2>
+          <p>Manage your academy with powerful administration tools</p>
+          <ul className="features-list">
+            <li><i className="fas fa-check-circle"></i> Upload Notes & Materials</li>
+            <li><i className="fas fa-check-circle"></i> Create MCQ Exams</li>
+            <li><i className="fas fa-check-circle"></i> Manage DPP (Daily Practice)</li>
+            <li><i className="fas fa-check-circle"></i> Upload Previous Year Papers</li>
+            <li><i className="fas fa-check-circle"></i> Track Student Progress</li>
+          </ul>
         </div>
       </div>
     </div>
